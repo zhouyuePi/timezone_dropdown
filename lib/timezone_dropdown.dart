@@ -2,18 +2,18 @@ library timezone_dropdown;
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 typedef TimezoneSelectedFunction = void Function(String timeZone);
 
 class TimezoneDropdown extends StatefulWidget {
+  final String? initialTimeZone;
   final String hintText;
   final TimezoneSelectedFunction onTimezoneSelected;
 
-  const TimezoneDropdown(
-      {super.key, required this.hintText, required this.onTimezoneSelected});
+  const TimezoneDropdown({super.key, required this.initialTimeZone, required this.hintText, required this.onTimezoneSelected});
 
   @override
   TimezoneDropdownState createState() => TimezoneDropdownState();
@@ -21,7 +21,7 @@ class TimezoneDropdown extends StatefulWidget {
 
 class TimezoneDropdownState extends State<TimezoneDropdown> {
   final List<String> timezones = [];
-  String? myTz = "";
+  late String? myTz;
 
   @override
   void initState() {
@@ -37,7 +37,11 @@ class TimezoneDropdownState extends State<TimezoneDropdown> {
   }
 
   void loadTimeZones() async {
-    myTz = await FlutterNativeTimezone.getLocalTimezone();
+    if (widget.initialTimeZone != null) {
+      myTz = widget.initialTimeZone;      
+    } else {
+      myTz = await FlutterNativeTimezone.getLocalTimezone();
+    }
 
     widget.onTimezoneSelected(myTz!);
 
