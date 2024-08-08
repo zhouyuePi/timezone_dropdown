@@ -40,7 +40,7 @@ class TimezoneDropdownState extends State<TimezoneDropdown> {
     if (widget.initialTimeZone != null) {
       myTz = widget.initialTimeZone;      
     } else {
-      myTz = await FlutterNativeTimezone.getLocalTimezone();
+      myTz = await FlutterTimezone.getLocalTimezone();
     }
 
     widget.onTimezoneSelected(myTz!);
