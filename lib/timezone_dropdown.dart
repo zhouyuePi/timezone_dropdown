@@ -21,7 +21,7 @@ class TimezoneDropdown extends StatefulWidget {
 
 class TimezoneDropdownState extends State<TimezoneDropdown> {
   final List<String> timezones = [];
-  late String? myTz;
+  String myTz = "";
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class TimezoneDropdownState extends State<TimezoneDropdown> {
       myTz = await FlutterTimezone.getLocalTimezone();
     }
 
-    widget.onTimezoneSelected(myTz!);
+    widget.onTimezoneSelected(myTz);
 
     setState(() {});
   }
@@ -59,12 +59,14 @@ class TimezoneDropdownState extends State<TimezoneDropdown> {
         showSelectedItems: true,
       ),
       onChanged: (String? data) {
-        widget.onTimezoneSelected(data!);
-        setState(() {
-          myTz = data;
-        });
+        if (data != null) {
+          widget.onTimezoneSelected(data!);
+          setState(() {
+            myTz = data;
+          });
+        }
       },
-      selectedItem: myTz!,
+      selectedItem: myTz,
       items: timezones,
     );
   }
